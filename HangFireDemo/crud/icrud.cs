@@ -12,6 +12,7 @@ namespace HangFireDemo.crud
         DataTable SyncData();
 
         List<Diary> GetAllRecords();
+        bool DeleteRecords(int ID);
 
     }
 }
