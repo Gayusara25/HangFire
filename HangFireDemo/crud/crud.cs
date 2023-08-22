@@ -36,15 +36,16 @@ namespace HangFireDemo.crud
             try
             {
                 string connection = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
-                var query = "INSERT INTO Diary(Name,Number,CreatedDate) VALUES(@Name,@Number,@CreatedDate)";
+                var query = "INSERT INTO Diary(Id,Name,Address) VALUES(@Id,@Name,@Address)";
                 SqlConnection con = new SqlConnection(connection);
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
+                    cmd.Parameters.AddWithValue("Id", diary.Id);
                     cmd.Parameters.AddWithValue("Name", diary.Name);
-                    cmd.Parameters.AddWithValue("Phonenumber", diary.Phonenumber);
+                    cmd.Parameters.AddWithValue("Address", diary.Address);
                     
-                    cmd.Parameters.AddWithValue("CreatedDate", DateTime.Now);
+                    
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -62,14 +63,49 @@ namespace HangFireDemo.crud
                     {
                         Id = Convert.ToInt32(dr["Id"]),
                         Name = dr["Name"].ToString(),
-                       Phonenumber = Convert.ToInt32(dr["Number"]),
-                       
+                        Address = dr["Address"].ToString()
                     }).ToList();
 
 
         }
+
+        public bool DeleteRecords(int ID)
+        {
+            int p;
+            try
+            {
+                string connection = _configuration.GetValue<string>("connectionstrings:defaultconnection");
+
+                SqlConnection con = new SqlConnection(connection);
+                con.Open();
+
+
+
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM Diary WHERE Id={ID}", con))
+                {
+                    p = cmd.ExecuteNonQuery();
+
+                }
+                if (p == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            Console.WriteLine($"UpdatedDatabase :Updating the database is in process...");
+        }
     }
 }
+
 
                     
 

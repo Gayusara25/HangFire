@@ -15,7 +15,7 @@ builder.Services.AddHangfire(config => config
     .UseRecommendedSerializerSettings()
     .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
-builder.Services.AddTransient<icrud,crud>();
+builder.Services.AddScoped<icrud,crud>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
